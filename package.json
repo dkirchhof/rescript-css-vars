@@ -1,0 +1,11 @@
+{
+  "name": "rescript-css-vars",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "rescript build -w"
+  },
+  "devDependencies": {
+    "rescript": "11.0.0-beta.1"
+  }
+}
