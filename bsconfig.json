@@ -1,6 +1,6 @@
 {
-  "name": "rescript-async-result",
-  "version": "0.0.2",
+  "name": "rescript-css-vars",
+  "version": "1.0.0",
   "sources": [
     {
       "dir": "src",
