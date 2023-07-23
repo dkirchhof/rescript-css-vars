@@ -48,3 +48,17 @@ body {
   color: ${vars.colors.fg};
 }
 ```
+
+Example output:
+```css
+  :root {
+    --colors_fg: white;
+    --colors_bg: black;
+    --fontSizes_normal: 1rem;
+    --fontSizes_big: 1.5rem;
+  }
+
+  body {
+    color: var(--colors_fg);
+  }
+```
