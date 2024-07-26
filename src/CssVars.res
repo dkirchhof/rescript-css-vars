@@ -13,7 +13,7 @@ let rec traverse = (theme, path) => {
         Js.Dict.set(vars, key, String(`var(--${path}${key})`))
       }
     | Object(value) => {
-        let (subValues, subVars) = traverse(value, `${path}${key}_`)
+        let (subValues, subVars) = traverse(value, `${path}${key}-`)
 
         Js.Array2.pushMany(values, subValues)->ignore
         Js.Dict.set(vars, key, Object(subVars))
@@ -29,19 +29,3 @@ let make = (theme: 'a): (string, 'a) => {
 
   (Js.Array2.joinWith(values, "\n"), Obj.magic(vars))
 }
-
-// const traverse = <T extends Record<string, Record<string, string>>>(theme: T): { values: string[], vars: T; } => {
-//     const values: string[] = [];
-//     const vars: Record<string, Record<string, string>> = {};
-
-//     Object.entries(theme).forEach(([key, value]) => {
-//         vars[key] = {};
-
-//         Object.entries(value).forEach(([subKey, subValue]) => {
-//              values.push(`--${key}-${subKey}: ${subValue};`);
-//              vars[key][subKey] = `var(--${key}-${subKey})`;
-//         });
-//     });
-
-//     return { values, vars } as any;
-// };

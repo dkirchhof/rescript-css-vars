@@ -1,1 +1,1 @@
-let make: (. 'a) => (string, 'a)
+let make: 'a => (string, 'a)

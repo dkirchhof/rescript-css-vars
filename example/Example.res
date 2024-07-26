@@ -12,8 +12,8 @@ type theme = {colors: colors, fontSizes: fontSizes}
 
 let (values, vars) = CssVars.make({
   colors: {
-    fg: "black",
-    bg: "white",
+    fg: "light-dark(black, white)",
+    bg: "light-dark(white, black)",
   },
   fontSizes: {
     normal: "1rem",
@@ -21,10 +21,17 @@ let (values, vars) = CssVars.make({
   },
 })
 
+let printWithSpaces = (lines, spaces) => {
+  lines
+  ->Js.String2.split("\n")
+  ->Js.Array2.map(line => Js.String2.repeat(" ", spaces) ++ line)
+  ->Js.Array2.joinWith("\n")
+}
+
 Js.log(
   `
   :root {
-    ${values}
+${printWithSpaces(values, 4)}
   }
 
   body {
