@@ -1,6 +1,6 @@
 {
   "name": "rescript-css-vars",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "license": "MIT",
   "scripts": {
     "build": "rescript build",
@@ -8,6 +8,6 @@
     "example": "bun example/Example.mjs"
   },
   "devDependencies": {
-    "rescript": "^11.1.2"
+    "rescript": "^12.2.0"
   }
 }

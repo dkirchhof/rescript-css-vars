@@ -21,7 +21,7 @@ type theme = {colors: colors, fontSizes: fontSizes}
 2. Use the `make` function to set all values.
 
 ```res
-let (values, vars) = CssVars.make({
+let cssVars = CssVars.make({
   colors: {
     fg: "black",
     bg: "white",
@@ -33,23 +33,32 @@ let (values, vars) = CssVars.make({
 })
 ```
 
-3. Inject the `values` string e.g. into the `:root` pseudo class.
+3. Inject the assignments e.g. into the `:root` pseudo class.
 
 ```css
 :root {
-  ${values}
+  ${CssVars.assignAll(cssVars)}
 }
 ```
 
-4. Use the `vars` record / object to get a css var.
+4. Use the `values` record / object to get a css var.
 
 ```css
 body {
-  color: ${vars.colors.fg};
+  color: ${cssVars.values.colors.fg};
 }
 ```
 
-Example output:
+## Local overrides
+
+```css
+header {
+  ${CssVars.override(cssVars.vars.colors.fg, "red")}
+}
+```
+
+## Example output:
+
 ```css
 :root {
   --colors-fg: white;
@@ -60,5 +69,9 @@ Example output:
 
 body {
   color: var(--colors-fg);
+}
+
+header {
+  --colors-fg: red;
 }
 ```

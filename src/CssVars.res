@@ -1,31 +1,57 @@
-@unboxed type rec value = String(string) | Object(Js.Dict.t<value>)
+@unboxed
+type rec value =
+  | String(string)
+  | Object(dict<value>)
+
+type cssVars<'a> = {
+  assignments: array<(string, string)>,
+  vars: 'a,
+  values: 'a,
+}
 
 let rec traverse = (theme, path) => {
-  let values = []
-  let vars = Js.Dict.empty()
+  let assignments = []
+  let vars = Dict.make()
+  let values = Dict.make()
 
   theme
-  ->Js.Dict.entries
-  ->Js.Array2.forEach(((key, value)) => {
+  ->Dict.toArray
+  ->Array.forEach(((key, value)) => {
     switch value {
     | String(value) => {
-        Js.Array2.push(values, `--${path}${key}: ${value};`)->ignore
-        Js.Dict.set(vars, key, String(`var(--${path}${key})`))
+        let var = `--${path}${key}`
+
+        Array.push(assignments, (var, value))
+        Dict.set(vars, key, String(var))
+        Dict.set(values, key, String(`var(${var})`))
       }
     | Object(value) => {
-        let (subValues, subVars) = traverse(value, `${path}${key}-`)
+        let (subAssignments, subVars, subValues) = traverse(value, `${path}${key}-`)
 
-        Js.Array2.pushMany(values, subValues)->ignore
-        Js.Dict.set(vars, key, Object(subVars))
+        Array.pushMany(assignments, subAssignments)
+        Dict.set(vars, key, Object(subVars))
+        Dict.set(values, key, Object(subValues))
       }
     }
   })
 
-  (values, vars)
+  (assignments, vars, values)
 }
 
-let make = (theme: 'a): (string, 'a) => {
-  let (values, vars) = theme->Obj.magic->traverse("")
+let make = values => {
+  let (assignments, vars, values) = traverse(Obj.magic(values), "")
 
-  (Js.Array2.joinWith(values, "\n"), Obj.magic(vars))
+  {
+    assignments,
+    vars: Obj.magic(vars),
+    values: Obj.magic(values),
+  }
+}
+
+let assignAll = cssVars => {
+  cssVars.assignments->Array.map(((var, value)) => `${var}: ${value};`)->Array.join("\n")
+}
+
+let override = (var, value) => {
+  `${var}: ${value};`
 }

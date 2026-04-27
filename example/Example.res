@@ -10,7 +10,7 @@ type fontSizes = {
 
 type theme = {colors: colors, fontSizes: fontSizes}
 
-let (values, vars) = CssVars.make({
+let cssVars = CssVars.make({
   colors: {
     fg: "light-dark(black, white)",
     bg: "light-dark(white, black)",
@@ -21,28 +21,32 @@ let (values, vars) = CssVars.make({
   },
 })
 
+let values = cssVars.values
+let vars = cssVars.vars
+
 let printWithSpaces = (lines, spaces) => {
   lines
-  ->Js.String2.split("\n")
-  ->Js.Array2.map(line => Js.String2.repeat(" ", spaces) ++ line)
-  ->Js.Array2.joinWith("\n")
+  ->String.split("\n")
+  ->Array.map(line => String.repeat(" ", spaces) + line)
+  ->Array.join("\n")
 }
 
-Js.log(
+Console.log(
   `
-  :root {
-${printWithSpaces(values, 4)}
-  }
+:root {
+${cssVars->CssVars.assignAll->printWithSpaces(2)}
+}
 
-  body {
-    color: ${vars.colors.fg};
-    background: ${vars.colors.bg};
+body {
+  color: ${cssVars.values.colors.fg};
+  background: ${cssVars.values.colors.bg};
 
-    font-size: ${vars.fontSizes.normal};
-  }
+  font-size: ${cssVars.values.fontSizes.normal};
+}
 
-  h1 {
-    font-size: ${vars.fontSizes.big};
-  }
-`,
+h1 {
+  ${CssVars.override(cssVars.vars.colors.fg, "red")}
+
+  font-size: ${cssVars.values.fontSizes.big};
+}`,
 )
