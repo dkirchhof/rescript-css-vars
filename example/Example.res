@@ -21,7 +21,7 @@ let cssVars = CssVars.make({
   },
 })
 
-let values = cssVars.values
+let theme = cssVars.values
 let vars = cssVars.vars
 
 let printWithSpaces = (lines, spaces) => {
@@ -38,15 +38,15 @@ ${cssVars->CssVars.assignAll->printWithSpaces(2)}
 }
 
 body {
-  color: ${cssVars.values.colors.fg};
-  background: ${cssVars.values.colors.bg};
+  color: ${theme.colors.fg};
+  background: ${theme.colors.bg};
 
-  font-size: ${cssVars.values.fontSizes.normal};
+  font-size: ${theme.fontSizes.normal};
 }
 
 h1 {
-  ${CssVars.override(cssVars.vars.colors.fg, "red")}
+  ${CssVars.override(vars.colors.fg, "red")}
 
-  font-size: ${cssVars.values.fontSizes.big};
+  font-size: ${theme.fontSizes.big};
 }`,
 )

@@ -31,9 +31,12 @@ let cssVars = CssVars.make({
     big: "1.5rem",
   },
 })
+
+let theme = cssVars.values
+let vars = cssVars.vars
 ```
 
-3. Inject the assignments e.g. into the `:root` pseudo class.
+3. Inject the variables for example into the `:root` pseudo class.
 
 ```css
 :root {
@@ -45,7 +48,7 @@ let cssVars = CssVars.make({
 
 ```css
 body {
-  color: ${cssVars.values.colors.fg};
+  color: ${theme.colors.fg};
 }
 ```
 
@@ -53,7 +56,7 @@ body {
 
 ```css
 header {
-  ${CssVars.override(cssVars.vars.colors.fg, "red")}
+  ${CssVars.override(vars.colors.fg, "red")}
 }
 ```
 
